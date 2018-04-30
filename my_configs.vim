@@ -1,4 +1,4 @@
-" Custom config overwriting amix/vimrc defaults
+" Custom config applied after amix/vimrc
 colorscheme holokai
 set background=dark
 
@@ -41,16 +41,21 @@ noremap <silent><expr> zg? incsearch#go(<SID>config_fuzzyall({'is_stay': 1}))
 
 " Auto completion
 filetype plugin on
-set completeopt=longest,menuone
 inoremap <expr> <Esc> pumvisible() ? "\<C-e>" : "\<Esc>"
-inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
-" keep menu item always highlighted by simulating <Up>/<Down> on pu visible
-"inoremap <expr> <C-p> pumvisible() ? '<C-p>' : '<C-p><C-r>=pumvisible() ? "\<lt>Up>" : ""<CR>'
-"inoremap <expr> <C-n> pumvisible() ? '<C-n>' : '<C-n><C-r>=pumvisible() ? "\<lt>Down>" : ""<CR>'
+inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<CR>"
+
+" Hack to fix arrow keys in insert-mode due to above mappings
+imap <ESC>oA <ESC>ki
+imap <ESC>oB <ESC>ji
+imap <ESC>oC <ESC>li
+imap <ESC>oD <ESC>hi
+
+let g:gitgutter_enabled = 1
+let g:NERDTreeWinPos = "left"
 
 " vim-go
 let g:go_gocode_unimported_packages = 1
-"let g:go_version_warning = 0
+let g:go_version_warning = 0
 "let g:go_metalinter_enabled = 0
 "let g:go_metalinter_autosave = 0
 "let g:go_fmt_fail_silently = 1
@@ -67,9 +72,6 @@ let g:syntastic_check_on_wq = 0
 let g:syntastic_auto_jump = 0
 hi SpellBad term=reverse ctermbg=darkgreen
 
-let g:gitgutter_enabled = 1
-let g:NERDTreeWinPos = "left"
-
 noremap $1 ()<esc>i
 noremap $2 []<esc>i
 noremap $3 {}<esc>i
@@ -83,9 +85,6 @@ autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
-
-"noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 10, 4)<CR>
-"noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 10, 4)<CR>
 
 function! s:config_fuzzyall(...) abort
   return extend(copy({
